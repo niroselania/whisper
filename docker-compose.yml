@@ -1,0 +1,19 @@
+services:
+  whisper:
+    build: .
+    container_name: whisper
+    restart: unless-stopped
+    ports:
+      # accesible desde los otros stacks por IP-DEL-SERVIDOR:9000 (no lo expongas a Internet)
+      - "${WHISPER_PORT:-9000}:9000"
+    environment:
+      WHISPER_MODEL: ${WHISPER_MODEL:-small}
+      WHISPER_LANGUAGE: ${WHISPER_LANGUAGE:-es}
+      WHISPER_THREADS: ${WHISPER_THREADS:-4}
+      WHISPER_TOKEN: ${WHISPER_TOKEN:?Definí WHISPER_TOKEN en Portainer}
+      MAX_AUDIO_SECONDS: ${MAX_AUDIO_SECONDS:-120}
+    volumes:
+      - whisper_models:/models
+
+volumes:
+  whisper_models:
